@@ -1,2 +1,7 @@
 solrwayback_package
 solrwayback_package.zip
+collection
+solr/solr_home
+solrwayback/*.war
+warc-indexer/*.jar
+warc-indexer/warc-indexer.sh

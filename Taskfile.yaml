@@ -17,6 +17,13 @@ tasks:
       - task: build:solrwayback
       - task: build:warc-indexer
 
+  prepare:
+    desc: Prepare the directories with the required artifacts
+    cmds:
+      - task: prepare:solr
+      - task: prepare:solrwayback
+      - task: prepare:warc-indexer
+
   download:
     desc: Download and extract the solrwayback package
     cmds:
