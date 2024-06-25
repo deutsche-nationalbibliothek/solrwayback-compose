@@ -1,0 +1,62 @@
+version: '3'
+
+env:
+  IMAGEBUILD_CMD: podman buildah docker
+  SOLRWAYBACK_RELEASE: 5.1.0
+
+tasks:
+  default:
+    desc: Lists all available tasks
+    cmds:
+      - task -a
+
+  build:
+    desc: Build all images
+    cmds:
+      - task: build:solr
+      - task: build:solrwayback
+      - task: build:warc-indexer
+
+  download:
+    desc: Download and extract the solrwayback package
+    cmds:
+      - curl -L -o solrwayback_package_{{.SOLRWAYBACK_RELEASE}}.zip https://github.com/netarchivesuite/solrwayback/releases/download/{{.SOLRWAYBACK_RELEASE}}/solrwayback_package_{{.SOLRWAYBACK_RELEASE}}.zip
+      - unzip solrwayback_package_{{.SOLRWAYBACK_RELEASE}}.zip
+      - mv $( zipinfo -1 solrwayback_package_{{.SOLRWAYBACK_RELEASE}}.zip | head -1 ) solrwayback_package
+
+  prepare:warc-indexer:
+    desc: Move files from the solrwayback package to the warc-indexer folder
+    dir: warc-indexer
+    cmds:
+      - cp ../solrwayback_package/indexing/warc-indexer.sh .
+      - cp ../solrwayback_package/indexing/warc-indexer-3.3.1-jar-with-dependencies.jar .
+
+  build:warc-indexer:
+    desc: Build the warc-indexer image
+    dir: warc-indexer
+    cmds:
+      - "{{.IMAGEBUILD_CMD}} build -t warc-indexer -f Containerfile ."
+
+  prepare:solrwayback:
+    desc: Move files from the solrwayback package to the solrwayback folder
+    dir: solrwayback
+    cmds:
+      - cp ../solrwayback_package/tomcat-9/webapps/* .
+
+  build:solrwayback:
+    desc: Build the solrwayback image
+    dir: solrwayback
+    cmds:
+      - "{{.IMAGEBUILD_CMD}} build -t solrwayback -f Containerfile ."
+
+  prepare:solr:
+    desc: Move files from the solrwayback package to the solr folder
+    dir: solr
+    cmds:
+      - cp -r ../solrwayback_package/solr-9/server/solr/ ./solr_home
+
+  build:solr:
+    desc: Build the solr image
+    dir: solr
+    cmds:
+      - "{{.IMAGEBUILD_CMD}} build -t solrwayback-solr -f Containerfile ."

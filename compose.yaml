@@ -1,0 +1,43 @@
+version: "3.7"
+
+services:
+  solr:
+    image: solr:9
+    restart: always
+    environment:
+      - SOLR_HEAP=1G
+    volumes:
+      - "./collection:/webarchive"
+      - "./solr/solr_home/:/var/solr/data"
+    expose:
+      - 8983
+    ports:
+      - 8983:8983
+    command:
+      - "-c"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8983/admin/ping"]
+
+  solrwayback:
+    image: localhost/solrwayback:latest
+    restart: always
+    volumes:
+      - "./collection:/webarchive"
+      - "./solrwayback/properties/solrwaybackweb.properties:/root/solrwaybackweb.properties"
+      - "./solrwayback/properties/solrwayback.properties:/root/solrwayback.properties"
+    expose:
+      - 8080
+    ports:
+      - 8080:8080
+
+  indexer:
+    image: localhost/warc-indexer:latest
+    environment:
+      SOLR_URL: http://solr:8983/solr/netarchivebuilder
+      STATUS_ROOT: /status
+    depends_on:
+      solr:
+        condition: service_healthy
+    volumes:
+      - "./collection:/webarchive"
+      - "./warc-indexer-status:/status"

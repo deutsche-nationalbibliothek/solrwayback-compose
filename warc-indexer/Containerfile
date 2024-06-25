@@ -1,0 +1,4 @@
+FROM eclipse-temurin:21
+RUN mkdir /opt/app
+COPY . /opt/app
+CMD /opt/app/warc-indexer.sh /webarchive/*
