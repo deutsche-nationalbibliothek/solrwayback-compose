@@ -19,7 +19,6 @@ tasks:
   build:
     desc: Build all images
     cmds:
-      - task: build:solr
       - task: build:solrwayback
       - task: build:warc-indexer
 
@@ -68,9 +67,3 @@ tasks:
     dir: solr
     cmds:
       - cp -r ../solrwayback_package/solr-9/server/solr/ ./solr_home
-
-  build:solr:
-    desc: Build the solr image
-    dir: solr
-    cmds:
-      - "{{.IMAGEBUILD_CMD}} build -t solrwayback-solr -f Containerfile ."
