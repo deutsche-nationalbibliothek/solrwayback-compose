@@ -37,6 +37,7 @@ tasks:
     cmds:
       - cp ../solrwayback_package/indexing/warc-indexer.sh .
       - cp ../solrwayback_package/indexing/warc-indexer-3.3.1-jar-with-dependencies.jar .
+      - cp ../solrwayback_package/indexing/config3.conf .
 
   build:warc-indexer:
     desc: Build the warc-indexer image

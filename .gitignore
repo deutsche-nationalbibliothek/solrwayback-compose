@@ -5,3 +5,4 @@ solr/solr_home
 solrwayback/*.war
 warc-indexer/*.jar
 warc-indexer/warc-indexer.sh
+warc-indexer/config3.conf
