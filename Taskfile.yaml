@@ -1,7 +1,8 @@
 version: '3'
 
 env:
-  IMAGEBUILD_CMD: podman buildah docker
+  IMAGEBUILD_CMD: podman
+  COMPOSE_CMD: podman-compose
   SOLRWAYBACK_RELEASE: 5.1.0
 
 tasks:
@@ -9,6 +10,11 @@ tasks:
     desc: Lists all available tasks
     cmds:
       - task -a
+
+  run:
+    desc: Execute the compose environment
+    cmds:
+      - "{{.COMPOSE_CMD}} up"
 
   build:
     desc: Build all images
