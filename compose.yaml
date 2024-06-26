@@ -13,6 +13,7 @@ services:
       - 8983
     ports:
       - 8983:8983
+    userns_mode: keep-id:uid=8983,gid=8983
     command:
       - "-c"
     healthcheck:
@@ -41,3 +42,7 @@ services:
     volumes:
       - "./collection:/webarchive"
       - "./warc-indexer-status:/status"
+
+# This is a custom option for podman to tell that it doesn't start the compose in a pod, since userns_mode is not allowed in pods.
+x-podman:
+  in_pod: false
