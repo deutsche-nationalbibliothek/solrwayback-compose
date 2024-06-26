@@ -6,3 +6,4 @@ solrwayback/*.war
 warc-indexer/*.jar
 warc-indexer/warc-indexer.sh
 warc-indexer/config3.conf
+warc-indexer-status
