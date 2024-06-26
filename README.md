@@ -21,3 +21,9 @@ The option `solr.server=http://solr:8983/solr/netarchivebuilder/` tells SolrWayb
 `STATUS_ROOT`: The path under which the warc indexer should store the status information.
 
 To trigger the WARC indexer run `podman-compose run indexer`. (Currently the indexer does not wait for solr to be available, so it fails on the initial podman-cmopose run, it needs to be run manually.)
+
+# License
+
+These files are licensed under the [Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt).
+
+[SolrWayback](https://github.com/netarchivesuite/solrwayback/blob/master/LICENSE.txt), [Sorl](https://github.com/apache/solr/blob/main/LICENSE.txt), and the [WARC Indexer](https://github.com/ukwa/webarchive-discovery#license) have their own licensens.
