@@ -5,7 +5,7 @@ services:
     image: solr:9
     restart: always
     environment:
-      - SOLR_HEAP=1G
+      SOLR_HEAP: 1G
     volumes:
       - "./collection:/webarchive"
       - "./solr/solr_home/:/var/solr/data"
