@@ -66,5 +66,14 @@ tasks:
     desc: Move files from the solrwayback package to the solr folder
     dir: solr
     cmds:
-      - "[ -d ./solr_home/ ] && echo -n 'solr_home already exists, should it be deleted and recreated? y/n: ' && read -r delete && [ $delete == 'y' ] && rm -r ./solr_home || false"
-      - cp -r ../solrwayback_package/solr-9/server/solr/ ./solr_home
+      - |
+        if [ -d ./solr_home/ ] && [ -z ${delete+x} ]
+        then
+          echo -n 'solr_home already exists, should it be deleted and recreated? y/n: '
+          read -r delete
+        fi
+        if [ $delete == 'y' ]
+        then
+          rm -r ./solr_home
+        fi
+        [ -d ./solr_home/ ] || cp -r ../solrwayback_package/solr-9/server/solr/ ./solr_home
