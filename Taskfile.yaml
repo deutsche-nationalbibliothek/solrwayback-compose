@@ -13,21 +13,33 @@ tasks:
 
   run:
     desc: Execute the compose environment
+    deps:
+      - task: prepare:run
     cmds:
       - "{{.COMPOSE_CMD}} up"
 
   build:
     desc: Build all images
+    deps:
+      - task: prepare:build
     cmds:
       - task: build:solrwayback
       - task: build:warc-indexer
 
-  prepare:
-    desc: Prepare the directories with the required artifacts
+  prepare:build:
+    desc: Prepare the directories with the required artifacts to build the images
+    deps:
+      - task: download
     cmds:
-      - task: prepare:solr
-      - task: prepare:solrwayback
-      - task: prepare:warc-indexer
+      - task: prepare:build:solrwayback
+      - task: prepare:build:warc-indexer
+
+  prepare:run:
+    desc: Prepare the directories with the required artifacts to run the containers
+    deps:
+      - task: download
+    cmds:
+      - task: prepare:run:solr
 
   download:
     desc: Download and extract the solrwayback package
@@ -35,8 +47,10 @@ tasks:
       - curl -L -o solrwayback_package_{{.SOLRWAYBACK_RELEASE}}.zip https://github.com/netarchivesuite/solrwayback/releases/download/{{.SOLRWAYBACK_RELEASE}}/solrwayback_package_{{.SOLRWAYBACK_RELEASE}}.zip
       - unzip solrwayback_package_{{.SOLRWAYBACK_RELEASE}}.zip
       - mv $( zipinfo -1 solrwayback_package_{{.SOLRWAYBACK_RELEASE}}.zip | head -1 ) solrwayback_package
+    generates:
+      - solrwayback_package
 
-  prepare:warc-indexer:
+  prepare:build:warc-indexer:
     desc: Move files from the solrwayback package to the warc-indexer folder
     dir: warc-indexer
     cmds:
@@ -50,7 +64,7 @@ tasks:
     cmds:
       - "{{.IMAGEBUILD_CMD}} build -t warc-indexer -f Containerfile ."
 
-  prepare:solrwayback:
+  prepare:build:solrwayback:
     desc: Move files from the solrwayback package to the solrwayback folder
     dir: solrwayback
     cmds:
@@ -62,7 +76,7 @@ tasks:
     cmds:
       - "{{.IMAGEBUILD_CMD}} build -t solrwayback -f Containerfile ."
 
-  prepare:solr:
+  prepare:run:solr:
     desc: Move files from the solrwayback package to the solr folder
     dir: solr
     cmds:
