@@ -17,7 +17,7 @@ services:
     command:
       - "-c"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8983/admin/ping"]
+      test: ["CMD", "curl", "-f", "http://localhost:8983/"]
 
   solrwayback:
     image: localhost/solrwayback:latest
@@ -36,9 +36,6 @@ services:
     environment:
       SOLR_URL: http://solr:8983/solr/netarchivebuilder
       STATUS_ROOT: /status
-    depends_on:
-      solr:
-        condition: service_healthy
     volumes:
       - "./collection:/webarchive"
       - "./warc-indexer-status:/status"
