@@ -31,7 +31,7 @@ jobs:
             ghcr.io/deutsche-nationalbibliothek/solrwayback-compose
           flavor: |
             latest=auto
-            prefix=solrwayback
+            prefix=solrwayback-
       - name: SolrWayback Build and push for many architectures
         id: swb_docker_build_tagged
         uses: docker/build-push-action@v5
@@ -52,7 +52,7 @@ jobs:
             ghcr.io/deutsche-nationalbibliothek/solrwayback-compose
           flavor: |
             latest=auto
-            prefix=warc-indexer
+            prefix=warc-indexer-
       - name: WARC Indexer Build and push for many architectures
         id: widx_docker_build_tagged
         uses: docker/build-push-action@v5
