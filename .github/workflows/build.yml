@@ -36,7 +36,7 @@ jobs:
         id: swb_docker_build_tagged
         uses: docker/build-push-action@v5
         with:
-          context: .
+          context: ./solrwayback
           file: ./solrwayback/Containerfile
           push: ${{ github.event_name != 'pull_request' }}
           platforms: 'linux/amd64,linux/arm64/v8,linux/ppc64le'
@@ -57,7 +57,7 @@ jobs:
         id: widx_docker_build_tagged
         uses: docker/build-push-action@v5
         with:
-          context: .
+          context: ./warc-indexer
           file: ./warc-indexer/Containerfile
           push: ${{ github.event_name != 'pull_request' }}
           platforms: 'linux/amd64,linux/arm64/v8,linux/ppc64le'
